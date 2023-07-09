@@ -25,13 +25,14 @@ type MongoDatabase struct {
 }
 
 type User struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	FirstName string             `bson:"first_name"`
-	LastName  string             `bson:"last_name"`
-	Email     string             `bson:"email"`
-	Age       int                `bson:"age"`
-	Balance   int                `bson:"balance"`
-	Password  string             `bson:"password"`
+	ID         primitive.ObjectID `bson:"_id,omitempty"`
+	FirstName  string             `bson:"first_name"`
+	LastName   string             `bson:"last_name"`
+	Email      string             `bson:"email"`
+	Age        int                `bson:"age"`
+	Balance    int                `bson:"balance"`
+	Password   string             `bson:"password"`
+	Permission string             `bson:"permission"`
 }
 
 func NewMongoDataBase() *MongoDatabase {
@@ -56,7 +57,7 @@ func (databaseInstance *MongoDatabase) connectDB() {
 	databaseInstance.ctx = context.TODO()
 }
 
-func (databaseInstance *MongoDatabase) CrateNewUser(user User) error {
+func (databaseInstance *MongoDatabase) CreateNewUser(user User) error {
 	if databaseInstance.ExistingUserCheck(user.Email) {
 		return errors.New("this email already exists")
 	}
@@ -82,6 +83,12 @@ func (databaseInstance *MongoDatabase) GetUserByEmail(email string) User {
 	}
 	return document
 }
+
+/*
+func (databaseInstance *MongoDatabase) GetAllUsers() []User {
+	return []User{}
+}
+*/
 
 func (databaseInstance *MongoDatabase) UpdateUserData(user User, query bson.D) error {
 	filter := bson.D{
