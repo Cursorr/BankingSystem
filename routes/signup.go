@@ -36,16 +36,15 @@ func Signup(c *gin.Context) {
 	}
 
 	user := database.User{
-		FirstName: body.Firstname,
-		LastName:  body.Lastname,
-		Email:     body.Email,
-		Age:       body.Age,
-		Password:  string(hash),
+		FirstName:  body.Firstname,
+		LastName:   body.Lastname,
+		Email:      body.Email,
+		Age:        body.Age,
+		Password:   string(hash),
+		Permission: "user",
 	}
 
-	err = database.Instance.CrateNewUser(user)
-
-	println(err.Error())
+	err = database.Instance.CreateNewUser(user)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
